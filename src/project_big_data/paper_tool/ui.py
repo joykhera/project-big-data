@@ -228,6 +228,9 @@ def _opportunity_panel(
             st.warning("Not enough signal in the paper to generate opportunities.")
             return
         st.session_state["generated_opps"] = opportunities_to_dataframe(opps)
+        # auto-persist every successful run so users don't have to click save
+        append_history(paper_title or "Unknown", source_mode, opps)
+        st.toast(f"Saved {len(opps)} opportunities to history.", icon="💾")
 
     df = st.session_state.get("generated_opps")
     if df is None or df.empty:
@@ -282,23 +285,15 @@ def _opportunity_panel(
 
     # ---- actions ----
     st.markdown("")
-    a1, a2 = st.columns(2)
-    with a1:
-        st.download_button(
-            "⬇ Download CSV",
-            data=export_csv_bytes(filtered),
-            file_name="generated_opportunities.csv",
-            mime="text/csv",
-            use_container_width=True,
-        )
-    with a2:
-        if st.button("💾 Save run to history", use_container_width=True):
-            append_history(
-                paper_title or "Unknown",
-                source_mode,
-                filtered.to_dict(orient="records"),
-            )
-            st.success("Saved.")
+    st.download_button(
+        "⬇ Download filtered CSV",
+        data=export_csv_bytes(filtered),
+        file_name="generated_opportunities.csv",
+        mime="text/csv",
+    )
+    st.caption(
+        "Every Generate auto-saves the full result set to history (see panel below)."
+    )
 
 
 def _history_panel() -> None:
