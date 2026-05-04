@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from datetime import datetime
+from typing import Any
 
 import pandas as pd
 import streamlit as st
@@ -27,6 +28,8 @@ from project_big_data.paper_tool.storage import (
     opportunities_to_dataframe,
 )
 
+# ---------- caching ----------
+
 
 @st.cache_data(ttl=3600, show_spinner=False)
 def _cached_arxiv_search(query: str, max_results: int) -> list[dict]:
@@ -38,9 +41,42 @@ def _cached_pdf_text(pdf_bytes: bytes) -> str:
     return extract_text_from_pdf(pdf_bytes)
 
 
+# ---------- card styling helpers ----------
+
+
+def _score_color(score: int) -> str:
+    if score >= 80:
+        return "#16a34a"  # green
+    if score >= 60:
+        return "#d97706"  # amber
+    return "#dc2626"  # red
+
+
+def _score_badge_html(score: int) -> str:
+    color = _score_color(score)
+    return (
+        f'<div style="display:inline-flex;align-items:center;justify-content:center;'
+        f'width:48px;height:48px;border-radius:50%;background:{color};color:white;'
+        f'font-weight:700;font-size:18px;flex-shrink:0;">{score}</div>'
+    )
+
+
+def _pill_html(label: str, value: str, *, bg: str = "#f1f5f9", fg: str = "#0f172a") -> str:
+    return (
+        f'<span style="display:inline-block;padding:3px 10px;margin:2px 4px 2px 0;'
+        f'border-radius:999px;background:{bg};color:{fg};font-size:12px;'
+        f'font-weight:500;">{label}: {value}</span>'
+    )
+
+
+# ---------- panels ----------
+
+
 def _paper_source_panel() -> tuple[str, str, str]:
-    st.subheader("1) Select paper source")
-    mode = st.radio("Source", ["Upload PDF", "Search arXiv"], horizontal=True)
+    st.subheader("1. Select a paper")
+    mode = st.radio(
+        "Source", ["Upload PDF", "Search arXiv"], horizontal=True, label_visibility="collapsed"
+    )
 
     if mode == "Upload PDF":
         uploaded = st.file_uploader("Research paper (PDF)", type=["pdf"])
@@ -48,13 +84,13 @@ def _paper_source_panel() -> tuple[str, str, str]:
             return mode, "", ""
         with st.spinner("Extracting text..."):
             text = _cached_pdf_text(uploaded.getvalue())
-        st.success(f"Loaded `{uploaded.name}` ({len(text.split())} words).")
+        st.success(f"Loaded `{uploaded.name}` — {len(text.split()):,} words")
         return mode, uploaded.name, text
 
     query = st.text_input("arXiv topic", value="ai healthcare")
     col1, col2 = st.columns([1, 1])
     with col1:
-        if st.button("Search papers"):
+        if st.button("Search papers", use_container_width=True):
             try:
                 st.session_state["arxiv_results"] = _cached_arxiv_search(query, 8)
             except Exception as exc:
@@ -68,7 +104,9 @@ def _paper_source_panel() -> tuple[str, str, str]:
 
     options = {f"{i + 1}. {hit.display_title}": hit for i, hit in enumerate(results)}
     selected = options[st.selectbox("Pick one paper", list(options))]
-    st.markdown(f"[Open paper page]({selected.paper_link})  ·  *{selected.primary_category}*")
+    st.markdown(
+        f"[Open paper page]({selected.paper_link})  ·  *{selected.primary_category}*"
+    )
 
     if full_pdf and selected.pdf_link and st.button("Load selected PDF"):
         try:
@@ -84,26 +122,81 @@ def _paper_source_panel() -> tuple[str, str, str]:
 
 
 def _analysis_panel(paper_text: str) -> tuple[list[tuple[str, float]], list[str]]:
-    st.subheader("2) Extract insights")
+    st.subheader("2. Extract insights")
     keywords = top_keywords(paper_text, top_n=20)
     points = extract_key_points(paper_text, limit=8)
 
     c1, c2, c3 = st.columns(3)
-    c1.metric("Words", len(paper_text.split()))
+    c1.metric("Words", f"{len(paper_text.split()):,}")
     c2.metric("Keywords", len(keywords))
     c3.metric("Key points", len(points))
 
-    with st.expander("Text preview"):
+    tab_kw, tab_pts, tab_text = st.tabs(["Keywords", "Key points", "Text preview"])
+    with tab_kw:
+        if keywords:
+            df = pd.DataFrame(keywords, columns=["keyword", "relevance"])
+            st.bar_chart(df.set_index("keyword")["relevance"].head(12))
+        else:
+            st.info("No keywords detected.")
+    with tab_pts:
+        if points:
+            for p in points:
+                st.markdown(f"- {p}")
+        else:
+            st.info("No key points detected.")
+    with tab_text:
         st.write(paper_text[:1500] + ("..." if len(paper_text) > 1500 else ""))
-
-    if keywords:
-        df = pd.DataFrame(keywords, columns=["keyword", "relevance"])
-        st.bar_chart(df.set_index("keyword")["relevance"].head(12))
-
-    st.markdown("**Key points**")
-    for i, p in enumerate(points, 1):
-        st.markdown(f"**{i}.** {p}")
     return keywords, points
+
+
+def _opportunity_card(row: dict[str, Any]) -> None:
+    score = int(row["score"])
+    with st.container(border=True):
+        # header: title + score circle on the right
+        h_left, h_right = st.columns([5, 1])
+        with h_left:
+            st.markdown(
+                f"<div style='font-size:18px;font-weight:600;line-height:1.3;'>"
+                f"{row['title']}</div>"
+                f"<div style='color:#64748b;font-size:13px;margin-top:4px;'>"
+                f"👤 {row['target_user']}</div>",
+                unsafe_allow_html=True,
+            )
+        with h_right:
+            st.markdown(
+                f"<div style='display:flex;justify-content:flex-end;'>"
+                f"{_score_badge_html(score)}</div>",
+                unsafe_allow_html=True,
+            )
+
+        st.markdown("")
+        # body: problem + solution side-by-side
+        b1, b2 = st.columns(2)
+        with b1:
+            st.markdown(
+                f"<div style='font-size:11px;font-weight:700;color:#dc2626;"
+                f"letter-spacing:0.06em;'>PROBLEM</div>"
+                f"<div style='font-size:13px;color:#334155;'>{row['problem_statement']}</div>",
+                unsafe_allow_html=True,
+            )
+        with b2:
+            st.markdown(
+                f"<div style='font-size:11px;font-weight:700;color:#16a34a;"
+                f"letter-spacing:0.06em;'>SOLUTION</div>"
+                f"<div style='font-size:13px;color:#334155;'>{row['solution_outline']}</div>",
+                unsafe_allow_html=True,
+            )
+
+        st.markdown("")
+        # pills row: revenue + risk-callout
+        st.markdown(
+            _pill_html("💰 Revenue", str(row["revenue_model"]), bg="#ecfdf5", fg="#065f46")
+            + _pill_html("⚠ Risk", str(row["risk_note"])[:90], bg="#fef3c7", fg="#92400e"),
+            unsafe_allow_html=True,
+        )
+
+        with st.expander("MVP scope (3 months)"):
+            st.write(row["mvp_scope"])
 
 
 def _opportunity_panel(
@@ -112,70 +205,123 @@ def _opportunity_panel(
     keywords: list[tuple[str, float]],
     points: list[str],
 ) -> None:
-    st.subheader("3) Generate business opportunities")
+    st.subheader("3. Generate business opportunities")
     if not GOOGLE_AI_API_KEY:
         st.info(
             "No `GOOGLE_AI_API_KEY` set — using template fallback. "
             "Set the env var for higher-quality, paper-specific opportunities."
         )
 
-    count = st.slider("How many?", 3, 10, 6)
-    min_score = st.slider("Minimum score", 0, 95, 50)
+    g_left, g_right = st.columns([3, 1])
+    with g_left:
+        count = st.slider("How many?", 3, 10, 6)
+    with g_right:
+        st.markdown("<div style='height:28px;'></div>", unsafe_allow_html=True)
+        generate = st.button("Generate", type="primary", use_container_width=True)
 
-    if st.button("Generate", type="primary"):
+    if generate:
         with st.spinner("Generating..."):
-            opps = generate_opportunities(keywords, points, count=count, paper_title=paper_title)
+            opps = generate_opportunities(
+                keywords, points, count=count, paper_title=paper_title
+            )
         if not opps:
             st.warning("Not enough signal in the paper to generate opportunities.")
             return
-        df = opportunities_to_dataframe(opps).sort_values("score", ascending=False)
-        st.session_state["generated_opps"] = df
+        st.session_state["generated_opps"] = opportunities_to_dataframe(opps)
 
     df = st.session_state.get("generated_opps")
     if df is None or df.empty:
         return
-    df = df[df["score"] >= min_score]
-    if df.empty:
-        st.warning("No opportunities meet the score threshold.")
+
+    # ---- post-generation filters in sidebar ----
+    st.sidebar.markdown("### Filter opportunities")
+    score_lo, score_hi = int(df["score"].min()), int(df["score"].max())
+    if score_lo == score_hi:
+        score_lo, score_hi = max(0, score_lo - 1), min(100, score_hi + 1)
+    score_range = st.sidebar.slider(
+        "Score range", 0, 100, (max(0, int(df["score"].min())), 100)
+    )
+    revenue_models = sorted(df["revenue_model"].dropna().unique().tolist())
+    selected_models = st.sidebar.multiselect(
+        "Revenue model", revenue_models, default=revenue_models
+    )
+    sort_by = st.sidebar.radio(
+        "Sort by", ["Score (high → low)", "Score (low → high)", "Title"], index=0
+    )
+
+    filtered = df[
+        df["score"].between(score_range[0], score_range[1])
+        & df["revenue_model"].isin(selected_models)
+    ].copy()
+    if sort_by == "Score (high → low)":
+        filtered = filtered.sort_values("score", ascending=False)
+    elif sort_by == "Score (low → high)":
+        filtered = filtered.sort_values("score", ascending=True)
+    else:
+        filtered = filtered.sort_values("title")
+
+    if filtered.empty:
+        st.warning("No opportunities match the current filters.")
         return
 
-    st.dataframe(df, use_container_width=True, hide_index=True)
-    for idx, row in df.reset_index(drop=True).iterrows():
-        with st.expander(f"{idx + 1}. {row['title']} (score: {row['score']})"):
-            st.markdown(f"**Target user:** {row['target_user']}")
-            st.markdown(f"**Problem:** {row['problem_statement']}")
-            st.markdown(f"**Solution:** {row['solution_outline']}")
-            st.markdown(f"**Revenue model:** {row['revenue_model']}")
-            st.markdown(f"**MVP scope:** {row['mvp_scope']}")
-            st.markdown(f"**Risk:** {row['risk_note']}")
+    # ---- summary metrics ----
+    m1, m2, m3 = st.columns(3)
+    m1.metric("Showing", f"{len(filtered)} / {len(df)}")
+    m2.metric("Avg score", f"{filtered['score'].mean():.0f}")
+    m3.metric("Top score", int(filtered["score"].max()))
 
-    st.download_button(
-        "Download opportunities CSV",
-        data=export_csv_bytes(df),
-        file_name="generated_opportunities.csv",
-        mime="text/csv",
-    )
-    if st.button("Save run to history"):
-        append_history(paper_title or "Unknown", source_mode, df.to_dict(orient="records"))
-        st.success("Saved.")
+    # ---- card grid (2 cols) ----
+    rows = filtered.reset_index(drop=True).to_dict(orient="records")
+    for i in range(0, len(rows), 2):
+        col_a, col_b = st.columns(2, gap="medium")
+        with col_a:
+            _opportunity_card(rows[i])
+        if i + 1 < len(rows):
+            with col_b:
+                _opportunity_card(rows[i + 1])
+
+    # ---- actions ----
+    st.markdown("")
+    a1, a2 = st.columns(2)
+    with a1:
+        st.download_button(
+            "⬇ Download CSV",
+            data=export_csv_bytes(filtered),
+            file_name="generated_opportunities.csv",
+            mime="text/csv",
+            use_container_width=True,
+        )
+    with a2:
+        if st.button("💾 Save run to history", use_container_width=True):
+            append_history(
+                paper_title or "Unknown",
+                source_mode,
+                filtered.to_dict(orient="records"),
+            )
+            st.success("Saved.")
 
 
 def _history_panel() -> None:
-    st.subheader("4) Saved runs")
     df = load_history()
     if df.empty:
-        st.info("No saved runs yet.")
         return
-    st.dataframe(df.sort_values("run_time", ascending=False), use_container_width=True)
+    with st.expander(f"Saved runs ({len(df)})"):
+        st.dataframe(
+            df.sort_values("run_time", ascending=False), use_container_width=True
+        )
 
 
 def render_paper_tool() -> None:
-    st.title("Research Paper -> Business Opportunity")
-    st.caption("Search or upload a paper, extract insights, generate scored opportunities, export.")
+    st.title("Research Paper → Business Opportunity")
+    st.caption(
+        "Search or upload a paper, extract insights, generate scored business "
+        "opportunities, and export."
+    )
     source, title, text = _paper_source_panel()
     if text:
         kws, pts = _analysis_panel(text)
+        st.divider()
         _opportunity_panel(source, title, kws, pts)
     st.divider()
     _history_panel()
-    st.caption(f"Run: {datetime.now():%Y-%m-%d %H:%M}")
+    st.caption(f"Last run: {datetime.now():%Y-%m-%d %H:%M}")
