@@ -62,7 +62,7 @@ def test_parse_response_handles_code_fences():
 
 def test_generate_opportunities_uses_fallback_when_no_api_key(monkeypatch):
     import project_big_data.paper_tool.opportunities as mod
-    monkeypatch.setattr(mod, "ANTHROPIC_API_KEY", None)
+    monkeypatch.setattr(mod, "GOOGLE_AI_API_KEY", None)
     opps = generate_opportunities(_kws(), _points(), count=3, paper_title="Test")
     assert len(opps) == 3
     assert all(isinstance(o, Opportunity) for o in opps)
@@ -70,5 +70,5 @@ def test_generate_opportunities_uses_fallback_when_no_api_key(monkeypatch):
 
 def test_generate_opportunities_returns_empty_on_no_signal(monkeypatch):
     import project_big_data.paper_tool.opportunities as mod
-    monkeypatch.setattr(mod, "ANTHROPIC_API_KEY", None)
+    monkeypatch.setattr(mod, "GOOGLE_AI_API_KEY", None)
     assert generate_opportunities([], [], count=5) == []

@@ -7,7 +7,7 @@ from datetime import datetime
 import pandas as pd
 import streamlit as st
 
-from project_big_data.config import ANTHROPIC_API_KEY
+from project_big_data.config import GOOGLE_AI_API_KEY
 from project_big_data.paper_tool.analysis import (
     clean_text,
     extract_key_points,
@@ -113,9 +113,9 @@ def _opportunity_panel(
     points: list[str],
 ) -> None:
     st.subheader("3) Generate business opportunities")
-    if not ANTHROPIC_API_KEY:
+    if not GOOGLE_AI_API_KEY:
         st.info(
-            "No `ANTHROPIC_API_KEY` set — using template fallback. "
+            "No `GOOGLE_AI_API_KEY` set — using template fallback. "
             "Set the env var for higher-quality, paper-specific opportunities."
         )
 

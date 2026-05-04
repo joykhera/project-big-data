@@ -20,7 +20,7 @@ RAW_DIR: Path = DATA_DIR / "raw_data"
 PROCESSED_DIR: Path = DATA_DIR / "processed"
 LOGS_DIR: Path = project_root() / "logs"
 
-ANTHROPIC_API_KEY: str | None = os.getenv("ANTHROPIC_API_KEY")
+GOOGLE_AI_API_KEY: str | None = os.getenv("GOOGLE_AI_API_KEY")
 CONGRESS_API_KEY: str | None = os.getenv("CONGRESS_API_KEY")
 
-ANTHROPIC_MODEL: str = os.getenv("ANTHROPIC_MODEL", "claude-sonnet-4-6")
+GEMINI_MODEL: str = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")

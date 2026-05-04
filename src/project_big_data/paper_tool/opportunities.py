@@ -1,5 +1,5 @@
-"""Opportunity generation. Primary path uses Anthropic Claude with structured
-output for varied, paper-specific ideas. Fallback path produces template-based
+"""Opportunity generation. Primary path uses Google Gemini with JSON-mode output
+for varied, paper-specific ideas. Fallback path produces template-based
 opportunities so the app still works without an API key."""
 
 from __future__ import annotations
@@ -8,7 +8,7 @@ import json
 import logging
 from dataclasses import asdict, dataclass
 
-from project_big_data.config import ANTHROPIC_API_KEY, ANTHROPIC_MODEL
+from project_big_data.config import GEMINI_MODEL, GOOGLE_AI_API_KEY
 
 log = logging.getLogger(__name__)
 
@@ -89,35 +89,32 @@ def _parse_response(payload: str) -> list[Opportunity]:
     return out
 
 
-def _generate_with_claude(
+def _generate_with_gemini(
     title: str,
     keywords: list[tuple[str, float]],
     key_points: list[str],
     count: int,
 ) -> list[Opportunity]:
-    from anthropic import Anthropic
+    from google import genai
+    from google.genai import types
 
-    client = Anthropic(api_key=ANTHROPIC_API_KEY)
+    client = genai.Client(api_key=GOOGLE_AI_API_KEY)
     user_msg = _USER_TEMPLATE.format(
         title=title or "Untitled paper",
         keywords=_format_keywords(keywords),
         key_points=_format_points(key_points),
         count=count,
     )
-    resp = client.messages.create(
-        model=ANTHROPIC_MODEL,
-        max_tokens=4000,
-        system=[
-            {
-                "type": "text",
-                "text": _SYSTEM_PROMPT,
-                "cache_control": {"type": "ephemeral"},
-            }
-        ],
-        messages=[{"role": "user", "content": user_msg}],
+    response = client.models.generate_content(
+        model=GEMINI_MODEL,
+        contents=user_msg,
+        config=types.GenerateContentConfig(
+            system_instruction=_SYSTEM_PROMPT,
+            response_mime_type="application/json",
+            max_output_tokens=4000,
+        ),
     )
-    text = "".join(block.text for block in resp.content if block.type == "text")
-    return _parse_response(text)
+    return _parse_response(response.text or "")
 
 
 _FALLBACK_TEMPLATES = [
@@ -168,9 +165,9 @@ def generate_opportunities(
 ) -> list[Opportunity]:
     if not keywords or not key_points:
         return []
-    if ANTHROPIC_API_KEY:
+    if GOOGLE_AI_API_KEY:
         try:
-            return _generate_with_claude(paper_title, keywords, key_points, count)
+            return _generate_with_gemini(paper_title, keywords, key_points, count)
         except Exception as exc:  # pragma: no cover - network-dependent
-            log.warning("Claude generation failed (%s); falling back to templates.", exc)
+            log.warning("Gemini generation failed (%s); falling back to templates.", exc)
     return _fallback(keywords, key_points, count)

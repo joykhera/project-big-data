@@ -11,7 +11,7 @@ A Streamlit MVP that turns two kinds of public data into scored business opportu
 python -m venv venv
 source venv/bin/activate         # on macOS / Linux
 pip install -e ".[dev]"
-cp .env.example .env             # add your ANTHROPIC_API_KEY (optional but recommended)
+cp .env.example .env             # add your GOOGLE_AI_API_KEY (optional but recommended)
 streamlit run app.py
 ```
 
@@ -28,7 +28,7 @@ src/project_big_data/
     arxiv_client.py                    arxiv lib wrapper (rate-limited, retries)
     pdf_tools.py                       PyMuPDF text extraction
     analysis.py                        YAKE keywords + sumy LexRank key points
-    opportunities.py                   Anthropic Claude (with template fallback)
+    opportunities.py                   Google Gemini (with template fallback)
     storage.py                         history CSV (append-only)
     ui.py                              Streamlit panels for the paper flow
   policy/
@@ -57,7 +57,7 @@ data/
 | PDF parsing | [`pymupdf`](https://pymupdf.readthedocs.io/) | Wins benchmarks for word-order accuracy on scientific PDFs. |
 | Keywords | [`yake`](https://github.com/LIAAD/yake) | Unsupervised, single-document, no model download. |
 | Key points | [`sumy`](https://github.com/miso-belica/sumy) (LexRank) | Extractive summarization without an LLM. |
-| Opportunity generation | [`anthropic`](https://github.com/anthropics/anthropic-sdk-python) (Claude) | Distinct, paper-specific output via structured prompt; falls back to varied templates if no key set. |
+| Opportunity generation | [`google-genai`](https://github.com/googleapis/python-genai) (Gemini) | JSON-mode structured output for distinct, paper-specific opportunities; falls back to varied templates if no key set. |
 
 ## Running the policy pipeline
 
