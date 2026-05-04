@@ -111,7 +111,11 @@ def _generate_with_gemini(
         config=types.GenerateContentConfig(
             system_instruction=_SYSTEM_PROMPT,
             response_mime_type="application/json",
-            max_output_tokens=4000,
+            # Gemini 2.5 spends "thinking" tokens before output. Disable thinking
+            # for this structured-JSON task and give a generous output budget so
+            # the response never truncates mid-string.
+            thinking_config=types.ThinkingConfig(thinking_budget=0),
+            max_output_tokens=8192,
         ),
     )
     return _parse_response(response.text or "")
