@@ -14,12 +14,14 @@ from project_big_data.paper_tool.opportunities import Opportunity
 
 
 def _viability_pill(score: int) -> str:
+    """Dark backgrounds with light text — readable on both light and dark
+    Streamlit themes."""
     if score >= 7:
-        bg, fg, label = "#dcfce7", "#166534", "🟢 High"
+        bg, fg, label = "#064e3b", "#bbf7d0", "🟢 High"
     elif score >= 4:
-        bg, fg, label = "#fef3c7", "#92400e", "🟡 Medium"
+        bg, fg, label = "#78350f", "#fcd34d", "🟡 Medium"
     else:
-        bg, fg, label = "#fee2e2", "#991b1b", "🔴 Low"
+        bg, fg, label = "#7f1d1d", "#fecaca", "🔴 Low"
     return (
         f"<span style='display:inline-block;padding:3px 10px;border-radius:999px;"
         f"background:{bg};color:{fg};font-size:12px;font-weight:600;'>"
@@ -37,7 +39,7 @@ def _render_paper_block(paper: TrendingPaper) -> None:
                 unsafe_allow_html=True,
             )
             st.markdown(
-                f"<div style='color:#64748b;font-size:13px;margin-top:4px;'>"
+                f"<div style='font-size:13px;margin-top:4px;opacity:0.75;'>"
                 f"<a href='{paper.arxiv_url}' target='_blank'>{paper.paper_id}</a>"
                 f"  ·  ⬆ {paper.upvotes} upvotes</div>",
                 unsafe_allow_html=True,

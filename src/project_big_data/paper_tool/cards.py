@@ -25,7 +25,10 @@ def score_badge_html(score: int) -> str:
     )
 
 
-def pill_html(label: str, value: str, *, bg: str = "#f1f5f9", fg: str = "#0f172a") -> str:
+def pill_html(label: str, value: str, *, bg: str = "#064e3b", fg: str = "#a7f3d0") -> str:
+    """Default colors (dark green bg / light green text) read well in both
+    light and dark themes; saturated enough to read on white, dark enough to
+    read on near-black. Override per-call for category-specific colors."""
     return (
         f'<span style="display:inline-block;padding:3px 10px;margin:2px 4px 2px 0;'
         f'border-radius:999px;background:{bg};color:{fg};font-size:12px;'
@@ -34,6 +37,9 @@ def pill_html(label: str, value: str, *, bg: str = "#f1f5f9", fg: str = "#0f172a
 
 
 def opportunity_card(row: dict[str, Any]) -> None:
+    """Body text inherits Streamlit's theme color (no hard-coded fg) so the card
+    is readable in both light and dark themes. Coloured accents are kept for
+    PROBLEM/SOLUTION labels and pills, where the contrast is intentional."""
     score = int(row["score"])
     with st.container(border=True):
         h_left, h_right = st.columns([5, 1])
@@ -41,7 +47,7 @@ def opportunity_card(row: dict[str, Any]) -> None:
             st.markdown(
                 f"<div style='font-size:18px;font-weight:600;line-height:1.3;'>"
                 f"{row['title']}</div>"
-                f"<div style='color:#64748b;font-size:13px;margin-top:4px;'>"
+                f"<div style='font-size:13px;margin-top:4px;opacity:0.75;'>"
                 f"👤 {row['target_user']}</div>",
                 unsafe_allow_html=True,
             )
@@ -56,23 +62,23 @@ def opportunity_card(row: dict[str, Any]) -> None:
         b1, b2 = st.columns(2)
         with b1:
             st.markdown(
-                f"<div style='font-size:11px;font-weight:700;color:#dc2626;"
-                f"letter-spacing:0.06em;'>PROBLEM</div>"
-                f"<div style='font-size:13px;color:#334155;'>{row['problem_statement']}</div>",
+                f"<div style='font-size:11px;font-weight:700;color:#ef4444;"
+                f"letter-spacing:0.06em;margin-bottom:2px;'>PROBLEM</div>"
+                f"<div style='font-size:13px;line-height:1.5;'>{row['problem_statement']}</div>",
                 unsafe_allow_html=True,
             )
         with b2:
             st.markdown(
-                f"<div style='font-size:11px;font-weight:700;color:#16a34a;"
-                f"letter-spacing:0.06em;'>SOLUTION</div>"
-                f"<div style='font-size:13px;color:#334155;'>{row['solution_outline']}</div>",
+                f"<div style='font-size:11px;font-weight:700;color:#22c55e;"
+                f"letter-spacing:0.06em;margin-bottom:2px;'>SOLUTION</div>"
+                f"<div style='font-size:13px;line-height:1.5;'>{row['solution_outline']}</div>",
                 unsafe_allow_html=True,
             )
 
         st.markdown("")
         st.markdown(
-            pill_html("💰 Revenue", str(row["revenue_model"]), bg="#ecfdf5", fg="#065f46")
-            + pill_html("⚠ Risk", str(row["risk_note"])[:90], bg="#fef3c7", fg="#92400e"),
+            pill_html("💰 Revenue", str(row["revenue_model"]))
+            + pill_html("⚠ Risk", str(row["risk_note"])[:90], bg="#78350f", fg="#fcd34d"),
             unsafe_allow_html=True,
         )
 

@@ -1,59 +1,7 @@
 {
   "date": "2026-05-04",
-  "top_k": 3,
+  "top_k": 5,
   "papers": [
-    {
-      "paper_id": "2605.00416",
-      "title": "Learning while Deploying: Fleet-Scale Reinforcement Learning for Generalist Robot Policies",
-      "summary": "Learning While Deploying framework enables continuous improvement of Vision-Language-Action policies through fleet-scale offline-to-online reinforcement learning with distributed robot experience and human interventions.",
-      "keywords": [
-        "Vision-Language-Action",
-        "reinforcement learning",
-        "policy improvement",
-        "autonomous rollouts",
-        "human interventions",
-        "Distributional Implicit Value Learning",
-        "Q-learning",
-        "Adjoint Matching",
-        "flow-based action generators"
-      ],
-      "upvotes": 8,
-      "arxiv_url": "https://arxiv.org/abs/2605.00416",
-      "viability_score": 9,
-      "viability_reason": "Focuses on real-world robot deployment and continuous improvement. Direct application for autonomous logistics, manufacturing, or service robots. High commercial potential.",
-      "opportunities": [
-        {
-          "title": "Fleet-RL Policy Optimizer for Warehouse Robotics",
-          "target_user": "Warehouse Operations Manager at a large e-commerce fulfillment center using mobile manipulators.",
-          "problem_statement": "My fleet of autonomous robots struggles with novel or infrequent tasks, requiring manual re-programming or significant downtime for policy updates, which are slow and don't leverage collective robot experience.",
-          "solution_outline": "A cloud-based platform that ingests real-time Vision-Language-Action data from a robot fleet, using 'Learning while Deploying' reinforcement learning to continuously optimize task policies. It identifies underperforming policies and suggests improvements, autonomously rolling out validated updates or flagging for human review, significantly reducing intervention time and improving task success rates.",
-          "revenue_model": "Subscription (per robot per month) based on fleet size and feature tier.",
-          "mvp_scope": "Integrate with a single warehouse robot model (e.g., Kitting robot). Demonstrate autonomous policy improvement for a common, but slightly variable, pick-and-place task using simulated and limited real-world autonomous rollouts. Provide a dashboard for policy performance and manual intervention logging.",
-          "risk_note": "Ensuring data privacy and secure policy deployment in sensitive operational environments.",
-          "score": 90
-        },
-        {
-          "title": "Robotics 'Skill Forge' for Industrial Automation",
-          "target_user": "Robotics Engineer developing custom automation solutions for manufacturing plants.",
-          "problem_statement": "Developing robust and adaptable robot skills for complex assembly or inspection tasks is time-consuming, requires extensive manual tuning, and doesn't easily transfer across different robot types or minor environmental variations.",
-          "solution_outline": "A development environment and API that leverages 'Distributional Implicit Value Learning' and 'flow-based action generators' to allow engineers to define high-level tasks. The system then automatically generates and refines Vision-Language-Action policies, learning from diverse simulated and real-world 'autonomous rollouts' across a small test fleet, significantly reducing manual programming and accelerating skill deployment.",
-          "revenue_model": "Usage-based (per policy refinement cycle or compute hours) with optional enterprise licensing for on-premise deployment.",
-          "mvp_scope": "Focus on generating and refining policies for a single robotic arm in a controlled environment, demonstrating adaptability to minor changes (e.g., part orientation, lighting). Provide a visual interface to define tasks and monitor policy evolution. Support human interventions to guide learning.",
-          "risk_note": "Difficulty in proving policy robustness and generalizability across varied real-world industrial environments without extensive client-side testing.",
-          "score": 85
-        },
-        {
-          "title": "Autonomous Patrol Bot Policy Enhancement Service",
-          "target_user": "Security Director overseeing a fleet of autonomous security patrol robots for a corporate campus.",
-          "problem_statement": "Our patrol robots frequently encounter new obstacles or situations (e.g., unexpected construction, new furniture layouts) that cause them to get stuck or require manual remote control, leading to coverage gaps and increased operational overhead.",
-          "solution_outline": "A managed service that continuously monitors and updates the navigation and anomaly detection policies of autonomous patrol bots. Utilizing 'Adjoint Matching' and reinforcement learning from 'human interventions' and fleet-wide 'autonomous rollouts,' the service proactively pushes optimized policies to handle novel scenarios, reducing instances of robot stalling and improving overall patrol efficiency.",
-          "revenue_model": "Services-based, with a fixed monthly fee per robot managed and an uptime SLA (Service Level Agreement) bonus structure.",
-          "mvp_scope": "Onboard a fleet of 5-10 existing patrol robots from a single client. Focus on improving navigation around dynamic obstacles and reducing 'stuck' events by 20%. Provide a weekly report on policy improvements and incident reduction. Remote policy updates only.",
-          "risk_note": "High bar for reliability and safety in security applications, making initial client acquisition challenging without strong testimonials.",
-          "score": 88
-        }
-      ]
-    },
     {
       "paper_id": "2604.27221",
       "title": "Web2BigTable: A Bi-Level Multi-Agent LLM System for Internet-Scale Information Search and Extraction",
@@ -71,37 +19,194 @@
       ],
       "upvotes": 23,
       "arxiv_url": "https://arxiv.org/abs/2604.27221",
-      "viability_score": 8,
-      "viability_reason": "Addresses real-world pain of deep web search and extraction. Clear product applications in competitive intelligence or market research.",
+      "viability_score": 9,
+      "viability_reason": "Directly addresses enterprise data extraction and competitive intelligence. High commercial value.",
       "opportunities": [
         {
-          "title": "DeepMarket Sentinel: Competitor Intelligence Platform",
-          "target_user": "Product Managers in e-commerce or SaaS startups",
-          "problem_statement": "Product managers struggle to get a comprehensive, real-time understanding of competitor product features, pricing changes, and market sentiment buried across forums, news, and dark web data, making strategic decisions reactive rather than proactive.",
-          "solution_outline": "A bi-level multi-agent system that first broadly searches the web for competitive signals, then uses specialized agents to deep-dive into specific competitor sites, forums, and review platforms, correlating data in a shared workspace with a closed-loop verify-reflect process to ensure accuracy and freshness.",
-          "revenue_model": "Subscription (tiered based on number of competitors tracked and data refresh frequency)",
-          "mvp_scope": "Track up to 5 competitors across specified public websites (e.g., product pages, press releases) and 2 major review platforms. Basic UI for competitor overview and change alerts. Manual verification step for initial agent training.",
-          "risk_note": "Ensuring the system consistently bypasses sophisticated anti-scraping measures and accurately interprets nuanced competitive language.",
-          "score": 90
+          "title": "Market Landscape Scout",
+          "target_user": "Strategic Analysts at mid-sized consulting firms researching new market entries.",
+          "problem_statement": "Strategic analysts spend days manually sifting through broad web sources and specific industry reports to understand market size, competitive landscape, and emerging trends, often missing crucial long-tail information.",
+          "solution_outline": "A bi-level multi-agent system that first broadly searches for market keywords, then recursively drills down into specific company profiles, regulatory documents, and news archives, cross-referencing information using a closed-loop verify-reflect process to build a comprehensive 'big table' report on demand.",
+          "revenue_model": "Subscription (tiered based on report volume and data freshness)",
+          "mvp_scope": "Focus on a single industry (e.g., AI in healthcare). Enable search, extraction, and synthesis of market size, key players, and recent funding rounds. Output structured JSON and summary report. Basic agent orchestration and iterative refinement. Manual user prompt refinement.",
+          "risk_note": "Risk of hallucination or outdated data from web sources if verification mechanisms are not robust enough.",
+          "score": 88
         },
         {
-          "title": "Compliance Scout: Regulatory Change Monitor",
-          "target_user": "Legal & Compliance Officers in FinTech or Healthcare SMBs",
-          "problem_statement": "Compliance officers are overwhelmed keeping up with constantly evolving industry regulations and legal precedents across multiple jurisdictions, leading to potential non-compliance fines or missed strategic opportunities.",
-          "solution_outline": "A multi-agent framework that decomposes regulatory search into jurisdictional and topic-specific sub-tasks. Agents use parallel execution to monitor government gazettes, legal databases, and industry news, storing findings in external memory. A 'verify-reflect' agent flags critical changes and their potential impact.",
-          "revenue_model": "Usage-based (per monitored regulation/jurisdiction and alert volume)",
-          "mvp_scope": "Monitor changes in 3 specific regulatory frameworks (e.g., GDPR, HIPAA, CCPA) within one jurisdiction. Alerts delivered via email with links to source documents. Manual keyword configuration by user.",
-          "risk_note": "Accuracy of legal interpretation by LLMs and avoiding 'hallucinations' for critical compliance advice.",
+          "title": "Competitive Intelligence Radar",
+          "target_user": "Product Managers in B2B SaaS companies monitoring competitor feature releases and pricing changes.",
+          "problem_statement": "Product managers struggle to keep up with the fast pace of competitor updates across multiple platforms, news sites, and social media, leading to delayed responses or missed opportunities.",
+          "solution_outline": "An always-on multi-agent system that monitors a predefined list of competitor websites, press releases, job postings (for tech stack clues), and social media discussions. It uses a shared external memory to track changes over time and flags significant updates, compiling them into a concise daily or weekly brief.",
+          "revenue_model": "Usage-based (per competitor tracked per month, with data freshness options)",
+          "mvp_scope": "Track 5 predefined competitors for feature announcements and pricing updates on their main websites and official blog. Generate daily email summaries. Initial agent architecture for parallel execution and shared state. Manual keyword configuration by user.",
+          "risk_note": "Competitors employing anti-scraping measures could severely limit data collection capabilities.",
           "score": 85
         },
         {
-          "title": "Trend Weaver: Emerging Technology Discovery",
-          "target_user": "R&D Heads or Innovation Analysts at Mid-Sized Tech Companies",
-          "problem_statement": "Innovation teams struggle to systematically identify nascent technological trends and their early adopters across disparate academic papers, patent filings, and niche tech blogs before they become mainstream.",
-          "solution_outline": "A bi-level multi-agent system where a high-level agent identifies broad technology domains, then specialized agents conduct deep dives into research papers, patent databases, and tech forums. The agents collaboratively extract key concepts, identify connections, and iteratively refine their understanding of emerging trends, presenting a consolidated report.",
-          "revenue_model": "Services (customized trend reports and API access for continuous monitoring)",
-          "mvp_scope": "Focus on 2-3 predefined technology sectors (e.g., 'sustainable AI', 'quantum computing applications'). Generate weekly 'Emerging Trend' reports with key papers, patents, and early adopter companies. Limited interactive querying.",
-          "risk_note": "Difficulty in discerning true 'signals' from 'noise' in early-stage technological discussions and ensuring novelty detection.",
+          "title": "IP Trend Forecaster",
+          "target_user": "R&D Directors at large manufacturing or biotech firms exploring emerging technology patent landscapes.",
+          "problem_statement": "R&D directors need to identify early-stage patent activity in specific technology domains to guide research investments, but manual patent database searches are time-consuming and often miss cross-disciplinary connections.",
+          "solution_outline": "A bi-level, multi-agent LLM system that performs broad searches across patent databases and academic publications to identify core technology areas, then deploys specialized agents to deep-dive into relevant patents, analyze claim language, and identify inventors or companies with increasing activity, presenting a trend analysis with supporting evidence.",
+          "revenue_model": "Services (customized report generation and API access licensing)",
+          "mvp_scope": "Focus on a single, well-defined technology domain (e.g., 'solid-state batteries'). Agents capable of searching USPTO and one major academic database. Basic extraction of key claims, inventors, and filing dates. Generate a simple trend report showing patent volume and top assignees. Closed-loop verification for claim accuracy.",
+          "risk_note": "Interpreting complex legal language within patents accurately and avoiding misinterpretations is a significant technical challenge for LLMs.",
+          "score": 90
+        }
+      ]
+    },
+    {
+      "paper_id": "2604.27151",
+      "title": "Step-level Optimization for Efficient Computer-use Agents",
+      "summary": "Computer-use agents often rely on expensive multimodal models for every interaction, but a more efficient approach uses lightweight policies with risk detection monitors to escalate to stronger models only when needed.",
+      "keywords": [
+        "computer-use agents",
+        "graphical user interfaces",
+        "multimodal models",
+        "compute allocation",
+        "event-driven cascade",
+        "Stuck Monitor",
+        "Milestone Monitor",
+        "semantic drift",
+        "progress stalls",
+        "risk detection"
+      ],
+      "upvotes": 14,
+      "arxiv_url": "https://arxiv.org/abs/2604.27151",
+      "viability_score": 8,
+      "viability_reason": "Directly tackles cost efficiency for AI agents, critical for scalable product deployment.",
+      "opportunities": [
+        {
+          "title": "Adaptive UI Automation Copilot",
+          "target_user": "Mid-market SaaS operations teams automating repetitive data entry or reporting.",
+          "problem_statement": "Existing UI automation tools are brittle, often failing due to minor UI changes or unexpected pop-ups, requiring constant manual intervention and developer resources to fix.",
+          "solution_outline": "A copilot that uses lightweight policies to execute routine UI tasks, continuously monitoring for 'Stuck Monitor' conditions (e.g., element not found, progress stall). Upon detection, it automatically escalates to a more powerful multimodal model to analyze the GUI and self-correct or suggest a fix.",
+          "revenue_model": "Usage-based subscription (per automated task execution, with tiers for advanced problem-solving escalations).",
+          "mvp_scope": "Integrate with common web browsers; support basic form filling and navigation; implement 'Stuck Monitor' for element not found and basic timeout; limited multimodal model integration for re-locating misaligned elements or suggesting next steps; basic reporting dashboard.",
+          "risk_note": "Ensuring the multimodal model's correction capabilities are sufficiently robust for diverse UI scenarios to truly reduce human intervention, not just flag issues.",
+          "score": 88
+        },
+        {
+          "title": "Smart Agent Resource Optimizer for DevOps",
+          "target_user": "DevOps engineers managing CI/CD pipelines and cloud agent compute resources.",
+          "problem_statement": "CI/CD agents often over-provision compute for all steps, leading to wasted cloud spend, or under-provision, causing slow builds. Dynamically allocating resources for each step based on real-time needs is complex and manual.",
+          "solution_outline": "A system that optimizes compute allocation for CI/CD pipeline steps. It uses lightweight policies to estimate resource needs for most steps, but employs a 'Milestone Monitor' and 'event-driven cascade' to detect performance bottlenecks or 'progress stalls'. In such cases, it escalates to a more sophisticated model to dynamically adjust compute or identify root causes, avoiding costly over-provisioning.",
+          "revenue_model": "SaaS subscription based on the number of optimized compute hours or agent instances, with value-based tiers for deeper insights.",
+          "mvp_scope": "Integrate with a single popular CI/CD platform (e.g., GitHub Actions); implement basic resource estimation policies for common build/test steps; 'progress stall' detection for long-running steps; demonstrate dynamic scaling (increase/decrease CPU/RAM); provide cost-saving analytics.",
+          "risk_note": "Accuracy of initial lightweight resource estimation policies and the ability of the escalation model to provide timely and effective adjustments without introducing new latency.",
+          "score": 85
+        },
+        {
+          "title": "Interactive Tutorial Anomaly Detector",
+          "target_user": "Product managers and learning experience designers building interactive software tutorials.",
+          "problem_statement": "Users frequently get 'stuck' or deviate significantly from intended paths in interactive tutorials, leading to frustration and high drop-off rates, but identifying these exact points and reasons manually is time-consuming.",
+          "solution_outline": "A tool that monitors user interactions within a tutorial. It uses lightweight policies to track progress and identify 'semantic drift' or 'Stuck Monitor' conditions (e.g., repeated wrong clicks, no progress after X attempts). When detected, it triggers an event-driven cascade to capture context and escalate to a multimodal model for root cause analysis, pinpointing exact tutorial flaws or common user misunderstandings.",
+          "revenue_model": "Annual software licensing per product/tutorial, with add-on services for expert analysis and recommendations.",
+          "mvp_scope": "Browser extension or SDK to track user clicks and text inputs within a defined web-based tutorial; 'Stuck Monitor' for repetitive actions or lack of progress; 'semantic drift' detection for deviation from expected click path; basic report highlighting problematic tutorial steps and aggregated user behavior.",
+          "risk_note": "Defining 'semantic drift' and 'stuck' accurately enough with lightweight policies to avoid false positives, and ensuring the multimodal analysis provides actionable insights for tutorial improvement.",
+          "score": 90
+        }
+      ]
+    },
+    {
+      "paper_id": "2605.00416",
+      "title": "Learning while Deploying: Fleet-Scale Reinforcement Learning for Generalist Robot Policies",
+      "summary": "Learning While Deploying framework enables continuous improvement of Vision-Language-Action policies through fleet-scale offline-to-online reinforcement learning with distributed robot experience and human interventions.",
+      "keywords": [
+        "Vision-Language-Action",
+        "reinforcement learning",
+        "policy improvement",
+        "autonomous rollouts",
+        "human interventions",
+        "Distributional Implicit Value Learning",
+        "Q-learning",
+        "Adjoint Matching",
+        "flow-based action generators"
+      ],
+      "upvotes": 8,
+      "arxiv_url": "https://arxiv.org/abs/2605.00416",
+      "viability_score": 8,
+      "viability_reason": "Continuous improvement for robot policies makes it highly valuable for logistics, manufacturing, and service robots.",
+      "opportunities": [
+        {
+          "title": "Autonomous Fleet Policy Refinement Engine",
+          "target_user": "Warehouse Operations Manager overseeing robotic pick-and-place fleets",
+          "problem_statement": "Robotic fleets often require extensive manual retraining or redeployment for new tasks or environment changes, leading to significant downtime and operational costs.",
+          "solution_outline": "A platform leveraging 'Learning While Deploying' to continuously update and improve robot Vision-Language-Action policies across a fleet, using both autonomous rollouts and logged human interventions to accelerate policy improvement without disrupting live operations.",
+          "revenue_model": "Subscription (per robot per month)",
+          "mvp_scope": "Integrate with a single type of warehouse robot (e.g., Kitting robot) for one specific task (e.g., bin-picking variation). Implement data collection for autonomous rollouts and a web interface for operators to log interventions and monitor policy improvement metrics.",
+          "risk_note": "Integrating with diverse robot hardware and existing fleet management systems can be complex and slow initial adoption.",
+          "score": 90
+        },
+        {
+          "title": "Robot Skill Adaptation Studio",
+          "target_user": "Robotics Engineer at an industrial automation company developing new robot applications",
+          "problem_statement": "Creating robust robot policies for novel manipulation tasks is time-consuming and requires extensive data collection or expert programming, hindering rapid prototyping and deployment.",
+          "solution_outline": "A web-based studio where engineers can define new tasks using natural language and vision examples. The platform then uses flow-based action generators and Q-learning, combined with simulated 'autonomous rollouts' and user-guided 'human interventions' (via teleoperation demos), to quickly generate and refine preliminary Vision-Language-Action policies.",
+          "revenue_model": "Usage-based (per policy refinement hour / simulation compute)",
+          "mvp_scope": "Develop a simplified drag-and-drop interface for task definition and a remote simulation environment. Allow users to upload CAD models of objects and define simple goals. Enable recording and playback of teleoperated interventions to guide policy learning for a specific manipulation primitive (e.g., 'grasp object X').",
+          "risk_note": "The gap between simulated and real-world performance ('sim2real') could be a major barrier to successful deployment without significant additional engineering.",
+          "score": 85
+        },
+        {
+          "title": "Generalist Robot Policy Marketplace",
+          "target_user": "Small to medium-sized manufacturing facility looking to automate specific, repeatable tasks",
+          "problem_statement": "Acquiring and integrating specialized robot policies for diverse manufacturing tasks is expensive and requires highly specialized robotics expertise, often out of reach for smaller operations.",
+          "solution_outline": "A marketplace offering pre-trained, generalist Vision-Language-Action policies for common industrial tasks (e.g., assembly, inspection, material handling). These policies are continuously improved by the 'Learning While Deploying' framework across a network of contributing robots, making them robust and adaptable upon licensing.",
+          "revenue_model": "Licensing (one-time fee per policy license with optional support subscription)",
+          "mvp_scope": "Curate and offer 3-5 'generalist' policies for highly specific, common tasks (e.g., 'sort screws by size', 'pick and place small parts'). Develop a secure licensing mechanism and a basic policy deployment guide for a single, popular robot platform. Partner with one initial 'fleet' to generate improvement data for a pilot policy.",
+          "risk_note": "Ensuring the robustness and compatibility of 'generalist' policies across different robot hardware and varying environmental conditions is challenging and critical for user trust.",
+          "score": 75
+        }
+      ]
+    },
+    {
+      "paper_id": "2605.00658",
+      "title": "UniVidX: A Unified Multimodal Framework for Versatile Video Generation via Diffusion Priors",
+      "summary": "UniVidX is a unified multimodal framework that uses video diffusion model priors for versatile video generation through stochastic condition masking, decoupled gated LoRA, and cross-modal self-attention mechanisms.",
+      "keywords": [
+        "video diffusion models",
+        "multimodal graphics tasks",
+        "conditional generation",
+        "stochastic condition masking",
+        "decoupled gated LoRA",
+        "cross-modal self-attention",
+        "modality-specific distributions",
+        "omnidirectional conditional generation",
+        "video generation"
+      ],
+      "upvotes": 65,
+      "arxiv_url": "https://arxiv.org/abs/2605.00658",
+      "viability_score": 7,
+      "viability_reason": "Clear use cases for content creation, marketing, and entertainment. Fast MVP potential.",
+      "opportunities": [
+        {
+          "title": "AdVerse: Dynamic Video Ad Generator",
+          "target_user": "Small business marketing managers creating social media campaigns",
+          "problem_statement": "Generating a diverse range of engaging video ad creatives with specific visual and audio cues for A/B testing is slow and expensive, often requiring multiple takes or editing sessions to match different campaign angles.",
+          "solution_outline": "AdVerse leverages UniVidX's omnidirectional conditional generation to create short, brand-consistent video ads from text prompts, image inputs (e.g., product shots), and audio themes (e.g., 'upbeat background music'). Users can rapidly iterate on different styles and messages without manual video editing.",
+          "revenue_model": "Usage-based (per video generation or per minute of generated video)",
+          "mvp_scope": "Develop a web interface for text-to-video ad generation (10-30 seconds), allowing users to upload a primary image asset and select from predefined audio styles. Focus on 5 common ad formats (e.g., product showcase, testimonial intro).",
+          "risk_note": "Quality consistency across diverse user inputs and the 'uncanny valley' effect for generated human-like elements.",
+          "score": 85
+        },
+        {
+          "title": "SceneFlow: Interactive Storyboard Creator",
+          "target_user": "Freelance videographers and independent filmmakers planning complex shots",
+          "problem_statement": "Visualizing complex scene transitions, character interactions, and environmental changes for storyboards is time-consuming and requires significant drawing or 3D modeling skills, hindering rapid pre-production iterations.",
+          "solution_outline": "SceneFlow provides an interactive canvas where users define scene elements (characters, objects, settings) via text or rough sketches. The system uses UniVidX's conditional generation to generate short video snippets (3-5 seconds) for specific camera angles, character actions, and environmental effects, dynamically updating the storyboard.",
+          "revenue_model": "Subscription (tiered access to features and generation quotas)",
+          "mvp_scope": "Implement a basic web application allowing users to input text descriptions for character actions and scene backgrounds. Generate short video clips (max 5 seconds) demonstrating simple character movements and environment changes. Integrate a 'drag-and-drop' storyboard builder.",
+          "risk_note": "Accurate interpretation of complex narrative prompts and maintaining visual continuity across multiple generated clips.",
+          "score": 80
+        },
+        {
+          "title": "Product Lens: Multi-angle Product Showcase",
+          "target_user": "E-commerce product photographers and marketers for online stores",
+          "problem_statement": "Creating engaging, multi-angle video showcases for new products with varying backgrounds and lighting conditions is resource-intensive, requiring professional studios or extensive post-production.",
+          "solution_outline": "Product Lens takes a single or few product images and, using UniVidX's versatile video generation, creates dynamic 360-degree or multi-angle video presentations. Users can specify virtual backgrounds (e.g., 'minimalist studio', 'outdoor sunlight') and product interaction (e.g., 'slow rotation', 'zoom to detail').",
+          "revenue_model": "Services (custom video packages or API access for bulk generation)",
+          "mvp_scope": "Develop a service where users upload 1-3 product images. Generate a 15-second rotating video of the product with a user-selected virtual background from a fixed library (e.g., white, black, wood grain). Initial focus on rigid objects.",
+          "risk_note": "Photorealistic rendering quality, especially for complex textures or transparent objects, and handling varying input image quality.",
           "score": 88
         }
       ]
@@ -120,37 +225,37 @@
       ],
       "upvotes": 10,
       "arxiv_url": "https://arxiv.org/abs/2605.00781",
-      "viability_score": 8,
-      "viability_reason": "Directly applicable to gaming, metaverse, or architectural visualization. Users can rapidly prototype 3D worlds from sketches, accelerating creation.",
+      "viability_score": 7,
+      "viability_reason": "Strong potential for gaming, metaverse, and architectural visualization. Clear user input for customization.",
       "opportunities": [
         {
-          "title": "LevelCraft AI: Game Environment Generator",
-          "target_user": "Indie game developers creating new levels for open-world or simulation games.",
-          "problem_statement": "Manually creating diverse and scale-consistent 3D game environments from scratch is time-consuming and requires significant artistic skill, often leading to generic or inconsistent worlds.",
-          "solution_outline": "Users upload a 2D segment map (e.g., roads, water, buildings zones). Our platform uses Map2World to generate a detailed, scale-consistent 3D environment, allowing developers to iterate quickly on world layouts and populate them with assets.",
-          "revenue_model": "Subscription (tiered based on generation credits and asset library access).",
-          "mvp_scope": "Web interface for 2D segment map upload. Backend integrating Map2World for basic 3D world generation (limited asset types like terrain, roads, water, simple buildings). Export to common game engine formats (e.g., glTF).",
-          "risk_note": "Ensuring the generated 3D worlds are directly usable and customizable within various game engines without extensive manual rework by developers.",
+          "title": "Game Environment Prototyper",
+          "target_user": "Indie game developer creating a new 3D game environment",
+          "problem_statement": "Rapidly prototyping diverse 3D game levels with consistent scale and high detail is a time-consuming and labor-intensive process, hindering early-stage iteration and design validation.",
+          "solution_outline": "A web-based platform allowing users to sketch 2D segment maps and input text prompts to instantly generate detailed, scale-consistent 3D game environments. Leverages Map2World for core generation and asset priors for detail.",
+          "revenue_model": "Subscription (tiered based on generation credits and asset library access)",
+          "mvp_scope": "Basic 2D map editor, text prompt interface, generation of 5 diverse environment presets (e.g., forest, urban, desert) with export to common game engines (e.g., FBX, OBJ). Limited customization of generated assets.",
+          "risk_note": "Quality and consistency of generated assets for diverse use cases might not meet professional game developer standards.",
           "score": 90
         },
         {
-          "title": "Architron 3D: Rapid Urban Concept Visualizer",
-          "target_user": "Urban planners and architects needing to quickly visualize early-stage urban development concepts.",
-          "problem_statement": "Presenting new urban development ideas to stakeholders requires costly and time-consuming 3D modeling, even for initial concepts, hindering rapid iteration and feedback.",
-          "solution_outline": "Architects sketch a 2D segment map of a proposed urban layout (e.g., residential, commercial, parks). Our tool generates a detailed, scale-consistent 3D conceptual model of the urban area in minutes, enabling instant visualization and modification.",
-          "revenue_model": "Usage-based (per-generation credit, with higher cost for complex detail levels or larger areas).",
-          "mvp_scope": "Basic web application to input 2D segment maps. Map2World integration for generating low-to-medium detail 3D urban models (basic building forms, roads, green spaces). Simple 3D viewer with navigation. Limited set of urban 'themes' (e.g., modern, classic).",
-          "risk_note": "The output's fidelity and aesthetic appeal must be sufficient for professional presentations, balancing speed with visual quality.",
+          "title": "Virtual Event Scene Builder",
+          "target_user": "Event organizer planning a virtual conference or trade show",
+          "problem_statement": "Creating unique, visually engaging 3D virtual event spaces often requires expensive 3D artists or limits design options to pre-built templates, leading to generic experiences.",
+          "solution_outline": "An intuitive tool where event organizers draw desired layouts (segment maps) and describe themes to generate custom 3D virtual stages, exhibition halls, or networking areas with specific details and consistent scale, ready for integration into virtual event platforms.",
+          "revenue_model": "Usage-based (per generated scene, with add-ons for premium assets)",
+          "mvp_scope": "Segment map input for room layouts, text prompt for theme/style, generation of 3 distinct virtual room types (e.g., stage, expo booth, lounge) with basic interactive elements (e.g., clickable screens). Export as web-ready 3D models.",
+          "risk_note": "Integration complexity with existing virtual event platforms and real-time rendering performance for complex scenes.",
           "score": 85
         },
         {
-          "title": "FilmScape AI: Virtual Set Creator",
-          "target_user": "Independent filmmakers and virtual production studios designing complex virtual sets for film and animation.",
-          "problem_statement": "Creating unique and elaborate 3D virtual sets from scratch is a significant bottleneck in time and budget for independent productions, limiting creative ambition.",
-          "solution_outline": "Users define a 2D segment map for their virtual set's layout (e.g., castle courtyard, alien landscape). Map2World generates a detailed, scale-consistent 3D virtual environment, dramatically accelerating set design and enabling quick previews and modifications.",
-          "revenue_model": "Licensing (per-project license fee for generated assets and environment, with optional premium asset packs).",
-          "mvp_scope": "Desktop application focusing on high-quality 3D asset generation for specific environment types (e.g., fantasy, sci-fi). Map2World integration for creating detailed 3D scenes from user-drawn segment maps. Export to common VFX software formats (e.g., FBX, USD).",
-          "risk_note": "Meeting the high visual fidelity and asset quality demands of film production, and seamless integration with existing virtual production pipelines.",
+          "title": "Architectural Visualization Generator",
+          "target_user": "Architect or urban planner needing quick 3D context for preliminary designs",
+          "problem_statement": "Architects spend significant time manually modeling surrounding environments or relying on stock assets that lack specific context and scale consistency for early-stage project visualization and client presentations.",
+          "solution_outline": "A plugin/standalone application that takes a user-defined footprint (segment map) and text description (e.g., 'urban park', 'residential street') to generate a contextually relevant, scale-consistent 3D environment around a proposed architectural model, enhancing early-stage visualization.",
+          "revenue_model": "Licensing (per user seat or project-based)",
+          "mvp_scope": "Direct integration with common CAD/BIM software (e.g., SketchUp, Revit) for segment map input. Generation of 3 common urban/suburban context types (e.g., city block, suburban street, green space). Basic material and lighting options.",
+          "risk_note": "Achieving photo-realistic quality and accurate geographic data integration for highly specific architectural contexts.",
           "score": 88
         }
       ]
